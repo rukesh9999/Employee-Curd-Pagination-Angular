@@ -1,0 +1,44 @@
+.header-menu{
+    background-color: brown;
+    height: 60px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+   
+}
+
+.buttons{
+    margin-left:500px;
+    margin-top: 10px;
+}
+
+.button1{
+    
+    
+    margin-right: 5px;
+    border-radius: 15px ;
+    color: teal;
+}
+
+.button2{
+    
+    margin-right: 5px;
+    border-radius: 15px;
+    color: teal;
+}
+
+.button1:hover{
+   
+    margin-right: 5px;
+    border-radius: 15px;
+    color: teal;
+    background-color: yellowgreen;
+}
+
+.button2:hover{
+   
+    margin-right: 5px;
+    border-radius: 15px;
+    color: teal;
+    background-color: yellowgreen;
+}

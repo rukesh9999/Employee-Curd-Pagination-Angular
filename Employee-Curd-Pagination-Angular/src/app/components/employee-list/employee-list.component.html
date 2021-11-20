@@ -1,0 +1,158 @@
+<div class="container">
+    <div>
+        <h3 class="text-primary text-center">Employee list</h3>
+    </div>
+    <form  [formGroup]="employeeForm">
+        <div class="row">
+            <input type="text" class="form-control" readonly type="hidden"   formControlName="pageNumber">
+            <input type="text" class="form-control" readonly type="hidden"   formControlName="itemsPerPage">
+
+            <div class="col m-1">
+                <input type="text" class="form-control"  placeholder="First name"  formControlName="firstName">
+            </div>
+            <div class="col m-1">
+                <input type="text" class="form-control" placeholder="Last name"    formControlName="lastName">
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col m-1">
+                <input type="text" class="form-control" placeholder="code"   formControlName="code">
+            </div>
+            <div class="col m-1">
+                <input type="text" class="form-control" placeholder="email"  formControlName="email">
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col m-1">
+                <ng-select [items]="designations"  placeholder="select Designation" bindLabel="name" bindValue="id" formControlName="designationId">
+                </ng-select>
+                <!-- <select class="form-select form-select-mb " formControlName="designationId">
+                    <option selected> Select Designation</option>
+                    <option *ngFor="let designation of designations" [value]="designation.id">{{designation.name}}
+                    </option>
+                </select> -->
+            </div>
+            <div class="col m-1">
+                <!-- <select class="form-select form-select-mb " formControlName="locationId">
+                    <option selected>Select Location</option>
+                    <option *ngFor="let location of locations" [value]="location.id">{{location.name}}</option>
+                </select> -->
+                <ng-select [items]="locations" placeholder="select Location" bindLabel="name" bindValue="id" formControlName="locationId"  >
+                </ng-select>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col m-1">
+                    <input
+                    type="text"
+                    placeholder="Datepicker"
+                    class="form-control"
+                    bsDatepicker
+                    [bsConfig]="{ isAnimated: true }" formControlName="fromDate">
+            </div>
+            <div class="col m-1">
+                    <input
+                    type="text"
+                    placeholder="Datepicker"
+                    class="form-control"
+                    bsDatepicker
+                    [bsConfig]="{ isAnimated: true }" formControlName="toDate">
+                  
+            </div>
+        </div>
+
+       
+        <div class="row">
+
+            <div class="col m-1">
+                <button type="submit" class="btn btn-primary btn-submit" (click)="getEmployeesThroughForm(employeeForm)" >Search</button>
+            </div>
+            
+            <div class="col m-1">
+                <button type="button" class="btn btn-primary btn-submit"   (click)="Reset(employeeForm)" >Reset</button>
+            </div>
+        </div>
+
+    </form>
+
+
+    <!-- <pre class="card card-block card-header   "   [hidden]="flag">{{message}}</pre> -->
+    <!-- <span>Count-{{}}</span> -->
+    <table class="table table-striped  table-responsive mt-5">
+        <thead>
+            <tr>
+                <th>Code</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Designation</th>
+                <th>Location</th>
+                <th>Created Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let employee of employees  | paginate: {
+            itemsPerPage: itemsPerPage,
+            currentPage: pageNumber,
+            totalItems: count
+          }">
+                <td>{{employee.code}}</td>
+                <td>{{employee.fullName}} </td>
+                <td>{{employee.email}} </td>
+                <td>{{employee.designation}}</td>
+                <td>{{employee.location}}</td>
+                <td>{{employee.createdDate | date}}</td>
+                <td><button class="btn btn-primary m-1" routerLink="/edit/{{employee.id}}"
+                        routerLinkActive="router-link-active">Edit</button>
+                    <button class="btn btn-danger m-1 " (click)="openModal(template)">Inactive</button>
+
+                    <ng-template #template>
+                        <div class="modal-body text-center">
+                            <p>Do you want to Inactive Employee?</p>
+                            <button type="button" class="btn btn-primary m-1"
+                                (click)="confirmToInactive(employee.id)">Yes</button>
+                            <button type="button" class="btn btn-primary m-1" (click)="declineToInactive()">No</button>
+                        </div>
+                    </ng-template>
+                </td>
+            </tr>
+            
+            <tr *ngIf="count==0">
+                <td class="text-center" colspan="11">No Records to Display</td>
+           </tr>
+            
+        </tbody>
+        
+    </table>
+    
+    <div *ngIf="count>3">
+
+        <div class="row">
+            <div class="col-md-8">
+                <pagination-controls previousLabel="Prev" nextLabel="Next"  directionLinks="true"  [responsive]="true"
+                    (pageChange)="handlePageChange($event)"></pagination-controls>
+            
+            </div>
+
+
+            <div class="col-md-4">
+                Items per Page:
+                <select (change)="handlePageSizeChange($event)">
+                    <option *ngFor="let size of pageSizes" >
+                      {{size}} 
+                    </option>
+                </select>
+            </div>
+        </div>
+
+    </div>
+
+    
+   
